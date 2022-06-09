@@ -1,15 +1,15 @@
+import { FC } from 'react'
+import { Hero } from 'components'
+
 import Link from 'next/link'
-import Layout from '../components/Layout'
+import Squiggle from 'components/Squiggle'
 
-const IndexPage = () => (
-  <Layout title="Home | Next.js + TypeScript Example">
-    <h1>Hello Next.js 👋</h1>
-    <p>
-      <Link href="/about">
-        <a>About</a>
-      </Link>
-    </p>
-  </Layout>
-)
+const Home: FC = () => {
+	return (
+		<div className='snap-y snap-mandatory flex flex-col h-full overflow-y-scroll'>
+			<Hero />
+		</div>
+	)
+}
 
-export default IndexPage
+export default Home

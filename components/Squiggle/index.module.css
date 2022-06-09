@@ -1,0 +1,12 @@
+.wave {
+    animation: 2s wave linear infinite;
+}
+
+@keyframes wave {
+    from {
+        background-position: 0px 0;
+    }
+    to {
+        background-position: 20px 0;
+    }
+}
