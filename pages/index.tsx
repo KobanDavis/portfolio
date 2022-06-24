@@ -1,13 +1,30 @@
 import { FC } from 'react'
-import { Hero } from 'components'
-
-import Link from 'next/link'
-import Squiggle from 'components/Squiggle'
+import { Title, Link, Squiggle } from 'components'
 
 const Home: FC = () => {
+	const links = ['profile', 'experience', 'hobbies', 'contact']
+
 	return (
-		<div className='snap-y snap-mandatory flex flex-col h-full overflow-y-scroll'>
-			<Hero />
+		<div className='flex snap-start h-screen flex-shrink-0 flex-col lg:flex-row dark:text-white'>
+			<div className='flex flex-col pt-20 lg:pt-0 mx-8 flex-1 items-center justify-center'>
+				<div className='flex flex-col'>
+					<Title />
+					<span className='my-8'>
+						<Squiggle />
+					</span>
+					<div className='flex flex-col flex-1 uppercase tracking-widest '>
+						<span className='font-bold'>Koban Davis</span>
+						<span className='font-light'>Web Developer</span>
+					</div>
+				</div>
+			</div>
+			<div className='flex flex-col pt-20 lg:pt-0 mx-8 flex-1 items-center justify-center'>
+				<div className='flex flex-col uppercase text-3xl font-bold'>
+					{links.map((link) => (
+						<Link to={link} key={link} />
+					))}
+				</div>
+			</div>
 		</div>
 	)
 }

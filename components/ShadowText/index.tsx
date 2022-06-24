@@ -1,6 +1,6 @@
 import { CSSProperties, FC } from 'react'
-
-interface ShadowTextProps {
+import clsx from 'clsx'
+interface ShadowTextProps extends React.HTMLAttributes<HTMLDivElement> {
 	children?: React.ReactNode
 	color?: string
 	shadowColor?: string
@@ -22,9 +22,15 @@ const ShadowText: FC<ShadowTextProps> = ({
 	shadowColor = 'black',
 	offset = size / 4,
 	direction = 'right',
+	className,
+	...props
 }) => {
 	return (
-		<div style={{ fontSize: size, letterSpacing: spacing, fontWeight: weight, lineHeight: `${size}px` }} className='relative uppercase'>
+		<div
+			style={{ fontSize: size, letterSpacing: spacing, fontWeight: weight, lineHeight: `${size}px` }}
+			className={clsx('relative uppercase', className)}
+			{...props}
+		>
 			<div className='text-transparent'>{children}</div>
 			<div style={{ color }} className='absolute z-10 top-0 left-0'>
 				{children}
