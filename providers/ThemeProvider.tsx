@@ -12,8 +12,6 @@ interface ThemeProviderProps {
 const ThemeProvider: FC<ThemeProviderProps> = (props) => {
 	const [theme, setTheme] = useState<Theme>('light')
 
-	useEffect(() => {}, [])
-
 	useEffect(() => {
 		const ql = window.matchMedia('(prefers-color-scheme: dark)')
 		setTheme(ql.matches ? 'dark' : 'light')
