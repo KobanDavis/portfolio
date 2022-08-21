@@ -1,6 +1,6 @@
 {
 	"name": "next-portfolio",
-	"packageManager": "yarn@3.2.1",
+	"packageManager": "yarn@3.2.2",
 	"private": true,
 	"scripts": {
 		"dev": "next",
