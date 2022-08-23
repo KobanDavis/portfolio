@@ -8,7 +8,7 @@ import '../styles/globals.css'
 const App: FC<AppProps> = ({ Component, pageProps }) => {
 	return (
 		<ThemeProvider>
-			<Background className='h-screen'>
+			<Background>
 				<Component {...pageProps} />
 			</Background>
 		</ThemeProvider>

@@ -5,6 +5,5 @@
 @tailwind utilities;
 
 body {
-    font-family: Montserrat;
-    overflow: hidden;
+	font-family: Montserrat;
 }

@@ -1,5 +1,4 @@
 import getSpotifyClient from 'lib/spotify'
-import spotify from 'lib/spotify'
 
 export default async (_, res) => {
 	const spotify = await getSpotifyClient()
