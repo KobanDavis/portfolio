@@ -4,6 +4,7 @@ import GenreGraph, { Genre } from 'components/GenreGraph'
 import ShadowCard from 'components/ShadowCard'
 import getSpotifyClient from 'lib/spotify'
 import steam, { Game } from 'lib/steam'
+import Photo from 'components/Photo'
 
 interface HobbiesProps {
 	me: SpotifyApi.CurrentUsersProfileResponse
@@ -17,7 +18,14 @@ const Hobbies: FC<HobbiesProps> = ({ me, recentlyPlayed, genres, recentGames, us
 	const parentRef = useRef<HTMLDivElement>(null)
 	return (
 		<div ref={parentRef} className='max-h-screen w-full overflow-y-auto snap-mandatory snap-y'>
-			<Title parent={parentRef}>Hobbies</Title>
+			<Title parent={parentRef}>Profile</Title>
+			<div className='flex flex-col items-center'>
+				<span className='text-4xl my-2 font-bold'>Hey!</span>
+				<span>I'm Koban!</span>
+				<div className='block'>
+					<Photo />
+				</div>
+			</div>
 			<Bracket label='Music'>
 				<div className='flex self-end mb-6 items-center relative cursor-pointer select-none' onClick={() => open(me.external_urls.spotify, '_blank')}>
 					<span className='font-bold'>{me.display_name}</span>
