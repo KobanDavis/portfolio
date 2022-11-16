@@ -76,8 +76,7 @@ export const getServerSideProps = async () => {
 		steam.getUserProfile(),
 	])
 
-	const items = topTracksRes.body.items.map((item) => item) as SpotifyApi.TrackObjectFull[]
-	const tracks = items.slice(0, 9)
+	const tracks = topTracksRes.body.items.slice(0, 9)
 
 	const genres = Object.entries(
 		artistsRes.body.items.reduce((genres, artist) => {

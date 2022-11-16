@@ -31,7 +31,7 @@ const GenreGraph: FC<GenreGraphProps> = ({ scrollContainer, genres, className, .
 	return (
 		<div ref={graphRef} className={clsx('flex justify-around items-baseline w-full border-l border-b border-black', className)} {...props}>
 			{genres.map(({ name, popularity }, i) => (
-				<div key={name} className=' relative flex p-2 [writing-mode:tb] rotate-180 h-full'>
+				<div key={name} className='select-none relative flex p-2 [writing-mode:tb] rotate-180 h-full'>
 					<span className='font-semibold '>{name}</span>
 					<div
 						style={{
