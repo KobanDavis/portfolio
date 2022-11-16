@@ -1,10 +1,11 @@
-import { CSSProperties, FC } from 'react'
+import { CSSProperties, FC, ReactNode, useState } from 'react'
 import clsx from 'clsx'
+
 interface ShadowTextProps extends React.HTMLAttributes<HTMLDivElement> {
-	children?: React.ReactNode
+	children?: ReactNode
 	color?: string
 	shadowColor?: string
-	shadow?: React.ReactNode
+	shadow?: ReactNode
 	size?: number
 	spacing?: number
 	offset?: number
@@ -25,8 +26,11 @@ const ShadowText: FC<ShadowTextProps> = ({
 	className,
 	...props
 }) => {
+	const [isHovered, setIsHovered] = useState<boolean>(false)
 	return (
 		<div
+			onMouseEnter={() => setIsHovered(true)}
+			onMouseLeave={() => setIsHovered(false)}
 			style={{ fontSize: size, letterSpacing: spacing, fontWeight: weight, lineHeight: `${size}px` }}
 			className={clsx('relative uppercase', className)}
 			{...props}
@@ -38,8 +42,8 @@ const ShadowText: FC<ShadowTextProps> = ({
 			<div
 				className='absolute transform text-transparent transition-all duration-200'
 				style={{
-					top: offset,
-					left: direction === 'left' ? offset * -1 : offset,
+					top: isHovered ? 0 : offset,
+					left: isHovered ? 0 : direction === 'left' ? offset * -1 : offset,
 					WebkitTextStrokeWidth: 1,
 					WebkitTextStrokeColor: shadowColor,
 				}}

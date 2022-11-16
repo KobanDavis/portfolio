@@ -1,134 +1,75 @@
-import { ShadowText } from 'components'
+import { FC, useRef } from 'react'
+import { Bracket, Title } from 'components'
+import GenreGraph, { Genre } from 'components/GenreGraph'
+import ShadowCard from 'components/ShadowCard'
 import getSpotifyClient from 'lib/spotify'
 import steam, { Game } from 'lib/steam'
-import { FC, useEffect, useState } from 'react'
 
 interface HobbiesProps {
+	me: SpotifyApi.CurrentUsersProfileResponse
 	recentlyPlayed: SpotifyApi.TrackObjectFull[]
-	genres: [string, number][]
+	genres: Genre[]
 	recentGames: Game[]
 	userProfile: any
 }
 
-const Hobbies: FC<HobbiesProps> = ({ recentlyPlayed, genres, recentGames, userProfile }) => {
-	console.log(userProfile)
-	const maxPopularity = genres[0][1]
+const Hobbies: FC<HobbiesProps> = ({ me, recentlyPlayed, genres, recentGames, userProfile }) => {
+	const parentRef = useRef<HTMLDivElement>(null)
 	return (
-		<div className='flex flex-col items-center justify-center w-full min-h-screen p-4 space-y-20'>
-			<div className='flex'>
-				<div className='flex items-center'>
-					<span className='font-bold'>Music</span>
-					<div className='h-0.5 w-4 ml-2 bg-black rounded-l-full' />
+		<div ref={parentRef} className='max-h-screen w-full overflow-y-auto snap-mandatory snap-y'>
+			<Title parent={parentRef}>Hobbies</Title>
+			<Bracket label='Music'>
+				<div className='flex self-end mb-6 items-center relative cursor-pointer select-none' onClick={() => open(me.external_urls.spotify, '_blank')}>
+					<span className='font-bold'>{me.display_name}</span>
+					<img className='h-8 w-8 ml-2 object-cover rounded-full' src={me.images[0].url} />
 				</div>
-				<div className='relative w-max flex items-center justify-center flex-col pl-12'>
-					<div className='absolute top-0 left-0 h-full w-4 border-2 border-r-0 border-black  rounded-l-xl' />
-					<span className='font-bold text-2xl mb-8'>Top tracks:</span>
-					<div className='w-max grid grid-cols-3 gap-8'>
-						{recentlyPlayed.map((song) => (
-							<div
-								key={song.id}
-								className=' relative cursor-pointer select-none'
-								onClick={() => window.open(song.external_urls.spotify, '_blank')}
-							>
-								<div className='border border-black transform -translate-x-2 -translate-y-2 hover:translate-x-0 hover:translate-y-0 transition-transform flex p-2 pr-4 bg-white'>
-									<img className='h-12 w-12 mr-2' src={song.album.images[0].url} />
-									<div className='flex flex-col'>
-										<span className='font-semibold '>{song.name}</span>
-										<span className='leading-tight'>{song.artists[0].name}</span>
-									</div>
-								</div>
-								<div className='-z-10 absolute top-0 left-0 h-full w-full bg-white border border-black' />
+				<span className='font-bold text-2xl mb-6 self-start'>Top tracks:</span>
+				<div className='w-max grid grid-cols-3 mb-6 gap-6'>
+					{recentlyPlayed.map((song) => (
+						<ShadowCard key={song.id} onClick={() => window.open(song.external_urls.spotify, '_blank')}>
+							<img className='h-11 w-11 mr-2' src={song.album.images[0].url} />
+							<div className='flex flex-col text-sm'>
+								<span className='font-semibold'>{song.name}</span>
+								<span className='leading-tight'>{song.artists[0].name}</span>
 							</div>
-						))}
-					</div>
-					<span className='font-bold text-2xl my-8'>Top Genres:</span>
-					<div className='w-max grid grid-cols-3 gap-8'>
-						{genres.map(([genre, popularity], i) => (
-							<Genre key={genre} genre={genre} percent={(popularity / maxPopularity) * 100} delay={i * 100} />
-						))}
-					</div>
+						</ShadowCard>
+					))}
 				</div>
-			</div>
-			<div className='flex'>
-				<div className='flex items-center'>
-					<span className='font-bold'>Gaming</span>
-					<div className='h-0.5 w-4 ml-2 bg-black rounded-l-full' />
+				<span className='font-bold text-2xl mb-6 self-start'>
+					Top Genres <span className='font-normal text-gray-400'>(by artist)</span>:
+				</span>
+				<GenreGraph scrollContainer={parentRef} className='h-48' genres={genres} />
+			</Bracket>
+			<Bracket label='Gaming'>
+				<div className='flex self-end mb-6 items-center relative cursor-pointer select-none' onClick={() => open(userProfile.profileurl, '_blank')}>
+					<span className='font-bold'>{userProfile.personaname}</span>
+					<img className='h-8 w-8 ml-2 object-cover' src={userProfile.avatarfull} />
 				</div>
-				<div className='relative w-max flex items-center justify-center flex-col pl-12'>
-					<div className='absolute top-0 left-0 h-full w-4 border-2 border-r-0 border-black  rounded-l-xl' />
-					<div className=' relative cursor-pointer select-none' onClick={() => open(userProfile.profileurl, '_blank')}>
-						<div className='my-4 transform -translate-x-2 -translate-y-2 hover:translate-x-0 hover:translate-y-0 transition-transform flex items-center'>
-							<img className='h-12 w-12 mr-2' src={userProfile.avatarfull} />
-							<div className='flex flex-col'>
-								<ShadowText size={32} offset={2}>
-									{userProfile.personaname}
-								</ShadowText>
-								<span className='leading-tight'></span>
+				<span className='font-bold text-2xl mb-6 self-start'>Recently played games:</span>
+				<div className='w-max grid grid-cols-3 gap-6'>
+					{recentGames.map((game) => (
+						<ShadowCard key={game.appid} onClick={() => window.open(`https://store.steampowered.com/app/${game.appid}`)}>
+							<img
+								className='h-11 w-11 mr-2'
+								src={`http://media.steampowered.com/steamcommunity/public/images/apps/${game.appid}/${game.img_icon_url}.jpg`}
+							/>
+							<div className='flex flex-col text-sm'>
+								<span className='font-semibold '>{game.name}</span>
+								<span className='leading-tight'>{Math.floor(game.playtime_forever / 60)}h</span>
 							</div>
-						</div>
-					</div>
-					<span className='font-bold text-2xl mb-8'>Recently played games:</span>
-					<div className='w-max grid grid-cols-3 gap-8'>
-						{recentGames.map((game) => (
-							<div
-								key={game.appid}
-								className=' relative cursor-pointer select-none'
-								onClick={() => window.open(`https://store.steampowered.com/app/${game.appid}`)}
-							>
-								<div className='border border-black transform -translate-x-2 -translate-y-2 hover:translate-x-0 hover:translate-y-0 transition-transform flex p-2 pr-4 bg-white'>
-									<img
-										className='h-12 w-12 mr-2'
-										src={`http://media.steampowered.com/steamcommunity/public/images/apps/${game.appid}/${game.img_icon_url}.jpg`}
-									/>
-									<div className='flex flex-col'>
-										<span className='font-semibold '>{game.name}</span>
-										<span className='leading-tight'>{Math.floor(game.playtime_forever / 60)}h</span>
-									</div>
-								</div>
-								<div className='-z-10 absolute top-0 left-0 h-full w-full bg-white border border-black' />
-							</div>
-						))}
-					</div>
+						</ShadowCard>
+					))}
 				</div>
-			</div>
-		</div>
-	)
-}
-
-interface GenreProps {
-	percent: number
-	genre: string
-	delay: number
-}
-
-const Genre: FC<GenreProps> = ({ genre, percent, delay }) => {
-	const [hasMounted, setHasMounted] = useState<boolean>(false)
-
-	useEffect(() => {
-		setTimeout(setHasMounted, 0, true)
-	}, [])
-
-	return (
-		<div className='relative select-none'>
-			<div className='border border-black transform -translate-x-2 -translate-y-2 hover:translate-x-0 hover:translate-y-0 transition-transform flex p-2 pr-4 bg-white'>
-				<span className='font-semibold '>{genre}</span>
-				<div
-					style={{
-						width: (hasMounted ? percent : 0) + '%',
-						transitionDelay: delay + 'ms',
-					}}
-					className='duration-500 flex transition-[width] h-full w-full absolute top-0 left-0 font-semibold bg-black text-white overflow-hidden whitespace-nowrap'
-				>
-					<span className='p-2 pr-4'>{genre}</span>
-				</div>
-			</div>
+			</Bracket>
+			<span className='mb-8' />
 		</div>
 	)
 }
 
 export const getServerSideProps = async () => {
 	const client = await getSpotifyClient()
-	const [topTracksRes, artistsRes, recentGames, userProfile] = await Promise.all([
+	const [meRes, topTracksRes, artistsRes, recentGames, userProfile] = await Promise.all([
+		client.getMe(),
 		client.getMyTopTracks(),
 		client.getMyTopArtists(),
 		steam.getRecentlyPlayedGames(),
@@ -152,8 +93,9 @@ export const getServerSideProps = async () => {
 	)
 		.sort((a, b) => (a[1] > b[1] ? -1 : 1))
 		.slice(0, 9)
+		.map(([name, popularity]) => ({ name, popularity }))
 
-	return { props: { recentlyPlayed: tracks, genres, recentGames, userProfile } }
+	return { props: { recentlyPlayed: tracks, genres, recentGames, userProfile, me: meRes.body } }
 }
 
 export default Hobbies

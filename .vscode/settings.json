@@ -4,6 +4,6 @@
     "**/.pnp.*": true
   },
   "eslint.nodePath": ".yarn/sdks",
-  "typescript.tsdk": ".yarn/sdks/typescript/lib",
+  "typescript.tsdk": ".yarn/cache/typescript-patch-80bfdb5552-301459fc3e.zip/node_modules/typescript/lib",
   "typescript.enablePromptUseWorkspaceTsdk": true
 }

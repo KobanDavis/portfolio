@@ -1,5 +1,5 @@
 import { FC } from 'react'
-import { Title, Link, Squiggle } from 'components'
+import { HeroTitle, Link, Squiggle } from 'components'
 
 const Home: FC = () => {
 	const links = ['profile', 'experience', 'hobbies', 'contact']
@@ -8,7 +8,7 @@ const Home: FC = () => {
 		<div className='flex snap-start h-screen flex-shrink-0 flex-col lg:flex-row dark:text-white'>
 			<div className='flex flex-col pt-20 lg:pt-0 mx-8 flex-1 items-center justify-center'>
 				<div className='flex flex-col'>
-					<Title />
+					<HeroTitle />
 					<span className='my-8'>
 						<Squiggle />
 					</span>

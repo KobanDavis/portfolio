@@ -1,4 +1,4 @@
-import { useContext, createContext, FC, useState, useEffect } from 'react'
+import { useContext, createContext, FC, useState, useEffect, ReactNode } from 'react'
 
 type Theme = 'light' | 'dark'
 type ThemeContext = {
@@ -6,7 +6,7 @@ type ThemeContext = {
 }
 
 interface ThemeProviderProps {
-	children?: React.ReactNode
+	children?: ReactNode
 }
 
 const ThemeProvider: FC<ThemeProviderProps> = (props) => {

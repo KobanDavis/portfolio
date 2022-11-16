@@ -1,9 +1,9 @@
 import clsx from 'clsx'
 import BackgroundParallax from 'components/BackgroundParallax'
-import { FC, useRef } from 'react'
+import { FC, ReactNode, useRef } from 'react'
 
 interface BackgroundProps extends React.HTMLAttributes<HTMLDivElement> {
-	children?: React.ReactNode
+	children?: ReactNode
 }
 
 const bg =

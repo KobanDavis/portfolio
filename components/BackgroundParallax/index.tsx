@@ -5,6 +5,7 @@ interface BackgroundProps {
 	el: MutableRefObject<HTMLDivElement>
 }
 
+// this is in its own component to stop re-rendering in child components
 const BackgroundParallax: FC<BackgroundProps> = ({ el }) => {
 	const p = useMousePosition()
 
@@ -14,7 +15,7 @@ const BackgroundParallax: FC<BackgroundProps> = ({ el }) => {
 		}
 	}, [el.current, p])
 
-	return <div className='hidden' />
+	return null
 }
 
 export default BackgroundParallax

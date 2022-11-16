@@ -1,42 +1,42 @@
-import { FC, useRef, useState } from 'react'
-import { ShadowText } from 'components'
-import useMousePosition from 'hooks/useMousePosition'
-import { useTheme } from 'providers/ThemeProvider'
+import clsx from 'clsx'
+import { FC, MutableRefObject, ReactNode, useEffect, useRef, useState } from 'react'
 
-const Title: FC = () => {
-	const boundary = useRef<HTMLDivElement>()
-	const { x, y } = useMousePosition(boundary.current)
-	const [isHovered, setIsHovered] = useState<boolean>(false)
+interface TitleProps {
+	children: ReactNode
+	parent: MutableRefObject<HTMLDivElement>
+}
 
-	const { isDark } = useTheme()
-	const color = isDark ? 'white' : 'black'
+const Title: FC<TitleProps> = ({ parent, children }) => {
+	const [scrolled, setScrolled] = useState<boolean>(false)
+	const selfRef = useRef<HTMLDivElement>(null)
+	useEffect(() => {
+		const onScroll = () => {
+			const rect = selfRef.current.getBoundingClientRect()
+			setScrolled(parent.current.scrollTop > rect.height)
+		}
+
+		if (parent && selfRef) {
+			onScroll()
+			parent.current?.addEventListener('scroll', onScroll)
+		}
+
+		return () => parent.current?.removeEventListener('scroll', onScroll)
+	}, [parent, selfRef])
 
 	return (
-		<div className='relative w-min'>
-			<div
-				ref={boundary}
-				onMouseEnter={() => setIsHovered(true)}
-				onMouseLeave={() => setIsHovered(false)}
-				className='z-20 w-[200%] h-[200%] absolute -top-1/2 -left-1/2'
-			/>
-			<div
-				className='transition-transform ease-out duration-300'
-				style={{
-					transform: isHovered
-						? `translate(${(x / boundary.current.clientWidth - 0.5) * 25}%, ${(y / boundary.current.clientHeight - 0.5) * 25}%)`
-						: undefined,
-				}}
-			>
-				<div className='flex flex-col'>
-					<ShadowText color={color} shadowColor={color} size={96} offset={isHovered ? 0 : 4} direction='left'>
-						Port
-					</ShadowText>
-					<ShadowText color={color} shadowColor={color} size={96} offset={isHovered ? 0 : 4} direction='left'>
-						folio
-					</ShadowText>
-				</div>
+		<>
+			<div ref={selfRef} className='transition-transform flex justify-center snap-center'>
+				<span className='font-bold text-4xl py-8'>{children}</span>
 			</div>
-		</div>
+			<div
+				className={clsx(
+					'fixed top-0 right-4 p-4 transition-transform ease-in-out duration-500 z-10 [writing-mode:tb] rotate-180',
+					!scrolled && '-translate-y-full'
+				)}
+			>
+				<span className='font-bold text-4xl'>{children}</span>
+			</div>
+		</>
 	)
 }
 
