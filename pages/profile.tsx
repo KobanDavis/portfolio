@@ -18,14 +18,14 @@ const Profile: FC<ProfileProps> = ({ me, recentlyPlayed, genres, recentGames, us
 	const parentRef = useRef<HTMLDivElement>(null)
 	return (
 		<div ref={parentRef} className='max-h-screen w-full overflow-y-auto snap-mandatory snap-y'>
-			<Title parent={parentRef}>Profile</Title>
-			<div className='flex flex-col items-center'>
+			{/* <Title parent={parentRef}>Profile</Title> */}
+			{/* <div className='flex justify-center items-center min-h-screen snap-center my-8'>
 				<span className='text-4xl my-2 font-bold'>Hey!</span>
-				<span>I'm Koban!</span>
+				<span>I'm Koban.</span>
 				<div className='block'>
 					<Photo />
 				</div>
-			</div>
+			</div> */}
 			<Bracket label='Music'>
 				<div className='flex self-end mb-6 items-center relative cursor-pointer select-none' onClick={() => open(me.external_urls.spotify, '_blank')}>
 					<span className='font-bold'>{me.display_name}</span>
@@ -87,7 +87,7 @@ export const getServerSideProps = async () => {
 	const tracks = topTracksRes.body.items.slice(0, 9)
 
 	const genres = Object.entries(
-		artistsRes.body.items.reduce((genres, artist) => {
+		artistsRes.body.items.reduce<Record<string, number>>((genres, artist) => {
 			artist.genres.forEach((genre) => {
 				if (genre in genres) {
 					genres[genre]++
@@ -96,7 +96,7 @@ export const getServerSideProps = async () => {
 				}
 			})
 			return genres
-		}, {} as Record<string, number>)
+		}, {})
 	)
 		.sort((a, b) => (a[1] > b[1] ? -1 : 1))
 		.slice(0, 9)

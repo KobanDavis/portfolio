@@ -2,7 +2,7 @@ import { FC } from 'react'
 import { HeroTitle, Link, Squiggle } from 'components'
 
 const Home: FC = () => {
-	const links = ['profile', 'experience', 'hobbies', 'contact']
+	const links = ['profile', 'experience', 'contact']
 
 	return (
 		<div className='flex snap-start h-screen flex-shrink-0 flex-col lg:flex-row dark:text-white'>
