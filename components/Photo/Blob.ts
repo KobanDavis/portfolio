@@ -2,7 +2,6 @@ import Point from './Point'
 
 class Blob {
 	private _points: Point[] = []
-	private _color: string = '#000000'
 	private _isHovered: boolean = false
 	private _prevMousePoint: { x: number; y: number } = { x: 0, y: 0 }
 
@@ -25,37 +24,35 @@ class Blob {
 
 	public onMouseMove(e: MouseEvent) {
 		const rect = this._canvas.getBoundingClientRect()
-		const diff = { x: e.clientX - this.center.x, y: e.clientY - this.center.y }
+		const diff = { x: e.clientX - this.center.x - rect.x, y: e.clientY - this.center.y - rect.y }
 		console.log(diff, e.clientX, e.clientY, this.center, rect)
 		const dist = Math.sqrt(diff.x * diff.x + diff.y * diff.y)
-		let angle: number = null
+		const angle = Math.atan2(diff.y, diff.x)
 
 		if (dist < this.radius && this._isHovered === false) {
-			angle = Math.atan2(diff.y, diff.x)
 			this._isHovered = true
 		} else if (dist > this.radius && this._isHovered === true) {
-			angle = Math.atan2(diff.y, diff.x)
 			this._isHovered = false
-			this._color = null
+		} else {
+			return
 		}
 
-		if (typeof angle === 'number') {
-			let nearestPoint: Point = null
-			let distanceFromPoint: number = 100
+		let nearestPoint: Point = null
+		let distanceFromPoint: number = 100
 
-			this._points.forEach((point) => {
-				if (Math.abs(angle - point.azimuth) < distanceFromPoint) {
-					nearestPoint = point
-					distanceFromPoint = Math.abs(angle - point.azimuth)
-				}
-			})
-
-			if (nearestPoint) {
-				let strength = { x: this._prevMousePoint.x - e.clientX, y: this._prevMousePoint.y - e.clientY }
-				let totalStrength = Math.min(100, Math.sqrt(strength.x * strength.x + strength.y * strength.y) * 10)
-				nearestPoint.setAcceleration((totalStrength / 100) * (this._isHovered ? -1 : 1))
+		this._points.forEach((point) => {
+			if (Math.abs(angle - point.azimuth) < distanceFromPoint) {
+				nearestPoint = point
+				distanceFromPoint = Math.abs(angle - point.azimuth)
 			}
+		})
+
+		if (nearestPoint) {
+			let strength = { x: this._prevMousePoint.x - e.clientX, y: this._prevMousePoint.y - e.clientY }
+			let totalStrength = Math.min(100, Math.sqrt(strength.x * strength.x + strength.y * strength.y) * 10)
+			nearestPoint.setAcceleration((totalStrength / 100) * (this._isHovered ? -1 : 1))
 		}
+
 
 		this._prevMousePoint.x = e.clientX
 		this._prevMousePoint.y = e.clientY

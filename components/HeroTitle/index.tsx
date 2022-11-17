@@ -28,10 +28,10 @@ const HeroTitle: FC = () => {
 				}}
 			>
 				<div className='flex flex-col'>
-					<ShadowText color={color} shadowColor={color} size={96} offset={4} direction='left'>
+					<ShadowText color={color} shadowColor={color} size={96} offset={isHovered ? 0 : 4} direction='left'>
 						Port
 					</ShadowText>
-					<ShadowText color={color} shadowColor={color} size={96} offset={4} direction='left'>
+					<ShadowText color={color} shadowColor={color} size={96} offset={isHovered ? 0 : 4} direction='left'>
 						folio
 					</ShadowText>
 				</div>

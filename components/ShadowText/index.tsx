@@ -26,11 +26,8 @@ const ShadowText: FC<ShadowTextProps> = ({
 	className,
 	...props
 }) => {
-	const [isHovered, setIsHovered] = useState<boolean>(false)
 	return (
 		<div
-			onMouseEnter={() => setIsHovered(true)}
-			onMouseLeave={() => setIsHovered(false)}
 			style={{ fontSize: size, letterSpacing: spacing, fontWeight: weight, lineHeight: `${size}px` }}
 			className={clsx('relative uppercase', className)}
 			{...props}
@@ -42,8 +39,8 @@ const ShadowText: FC<ShadowTextProps> = ({
 			<div
 				className='absolute transform text-transparent transition-all duration-200'
 				style={{
-					top: isHovered ? 0 : offset,
-					left: isHovered ? 0 : direction === 'left' ? offset * -1 : offset,
+					top: offset,
+					left: direction === 'left' ? offset * -1 : offset,
 					WebkitTextStrokeWidth: 1,
 					WebkitTextStrokeColor: shadowColor,
 				}}
