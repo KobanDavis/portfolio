@@ -1,5 +1,5 @@
 import clsx from 'clsx'
-import { FC, MutableRefObject, useEffect, useRef, useState } from 'react'
+import { FC, useEffect, useRef, useState } from 'react'
 
 export interface Genre {
 	name: string
@@ -8,24 +8,26 @@ export interface Genre {
 
 interface GenreGraphProps extends React.HTMLAttributes<HTMLDivElement> {
 	genres: Genre[]
-	scrollContainer: MutableRefObject<HTMLDivElement>
 }
 
-const GenreGraph: FC<GenreGraphProps> = ({ scrollContainer, genres, className, ...props }) => {
+const GenreGraph: FC<GenreGraphProps> = ({ genres, className, ...props }) => {
 	const [isVisible, setIsVisible] = useState<boolean>(false)
 	const graphRef = useRef<HTMLDivElement>(null)
 
 	useEffect(() => {
-		if (graphRef && scrollContainer) {
-			scrollContainer.current.addEventListener('scroll', () => {
+		if (graphRef.current) {
+			const onScroll = () => {
 				const rect = graphRef.current.getBoundingClientRect()
 				// el is completely visible
 				const isVisible = rect.top >= 0 && rect.bottom <= window.innerHeight
 
 				setIsVisible(isVisible)
-			})
+			}
+
+			window.addEventListener('scroll', onScroll)
+			return () => window.removeEventListener('scroll', onScroll)
 		}
-	}, [graphRef, scrollContainer])
+	}, [graphRef])
 
 	const maxPopularity = genres.reduce((max, { popularity }) => Math.max(popularity, max), 0)
 	return (

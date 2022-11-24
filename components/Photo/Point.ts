@@ -4,7 +4,7 @@ class Point {
 	private _components: { x: number; y: number }
 	private _radialEffect: number = 0
 	private _elasticity: number = 0.001
-	private _friction = 0.01
+	private _friction = 0.02
 	private _acceleration = 0
 	private _speed = 0
 

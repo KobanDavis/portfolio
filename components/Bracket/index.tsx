@@ -7,8 +7,8 @@ interface BracketProps {
 
 const Bracket: FC<BracketProps> = ({ label, children }) => {
 	return (
-		<div className='flex justify-center items-center min-h-screen snap-center my-8'>
-			<div className='flex snap-center'>
+		<div className='flex justify-center items-center min-h-screen my-8'>
+			<div className='flex'>
 				<div className='flex items-center'>
 					<span className='font-bold [writing-mode:tb] rotate-180'>{label}</span>
 					<div className='h-px w-4 ml-2 bg-black rounded-l-full' />

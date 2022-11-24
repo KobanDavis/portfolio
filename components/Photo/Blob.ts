@@ -25,7 +25,7 @@ class Blob {
 	public onMouseMove(e: MouseEvent) {
 		const rect = this._canvas.getBoundingClientRect()
 		const diff = { x: e.clientX - this.center.x - rect.x, y: e.clientY - this.center.y - rect.y }
-		console.log(diff, e.clientX, e.clientY, this.center, rect)
+
 		const dist = Math.sqrt(diff.x * diff.x + diff.y * diff.y)
 		const angle = Math.atan2(diff.y, diff.x)
 
@@ -52,7 +52,6 @@ class Blob {
 			let totalStrength = Math.min(100, Math.sqrt(strength.x * strength.x + strength.y * strength.y) * 10)
 			nearestPoint.setAcceleration((totalStrength / 100) * (this._isHovered ? -1 : 1))
 		}
-
 
 		this._prevMousePoint.x = e.clientX
 		this._prevMousePoint.y = e.clientY
@@ -95,7 +94,6 @@ class Blob {
 
 		this._ctx.fillStyle = this._pattern
 		this._ctx.fill()
-		this._ctx.strokeStyle = '#000000'
 
 		requestAnimationFrame(this.render.bind(this))
 	}

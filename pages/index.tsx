@@ -5,7 +5,7 @@ const Home: FC = () => {
 	const links = ['profile', 'experience', 'contact']
 
 	return (
-		<div className='flex snap-start h-screen flex-shrink-0 flex-col lg:flex-row dark:text-white'>
+		<div className='flex h-screen flex-shrink-0 flex-col lg:flex-row dark:text-white'>
 			<div className='flex flex-col pt-20 lg:pt-0 mx-8 flex-1 items-center justify-center'>
 				<div className='flex flex-col'>
 					<HeroTitle />
