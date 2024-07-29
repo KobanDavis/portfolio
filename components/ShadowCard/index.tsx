@@ -35,7 +35,9 @@ const ShadowCard: FC<ShadowCardProps> = ({ delay = 0, className, children, ...pr
 			>
 				{children}
 			</div>
-			<div className='-z-10 absolute top-0 left-0 h-full w-full bg-white border border-black' />
+			<div className='-z-10 absolute top-0 left-0 h-full w-full border border-black'>
+				<div className='stripes w-full h-full border-white border-2' />
+			</div>
 		</div>
 	)
 }

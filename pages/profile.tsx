@@ -28,8 +28,8 @@ const Profile: FC<ProfileProps> = ({ me, topTracks, recentTracks, genres, recent
 						a web developer based in the UK.
 					</Fade>
 					<Fade className='text-xl mt-2 font-light' delay={200}>
-						I enjoy a variety of hobbies, including music, gaming, basketball & skateboarding. Below you can see an overview of activity through the
-						respective service's API.
+						I enjoy listening to music, gaming, basketball and breaking several bones skateboarding. Below you can see what I've been up to in my
+						free time!
 					</Fade>
 				</div>
 				<Photo />
